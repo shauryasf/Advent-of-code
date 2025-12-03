@@ -3,13 +3,18 @@ def jolts(rows, k):
     for row in rows:
         vals = list(map(int, row))
         n = len(row)
-        stack = []
+        stack = 0
+        l = 0
         for i in range(n):
-            while stack and stack[-1] < vals[i] and n - i >= k + 1 - len(stack):
-                stack.pop()
-            stack.append(vals[i])
-        res += int(''.join(map(str, stack[:k])))
+            while l and stack % 10 < vals[i] and n - i >= k + 1 - l:
+                stack //= 10
+                l -= 1
+            if l < k:
+                stack = 10 * stack + vals[i]
+                l += 1
+        res += stack
     return res
+
 
 def solve(data):
     rows = data.split('\n')
